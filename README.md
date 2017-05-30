@@ -16,3 +16,9 @@ python main.py -help
 -o    --output        default: test.out       output file
 -n    --num_advice    default: 1              number of advice to provide
 ```
+for example
+```shell
+python main.py -i in_file -o out_file -n 2
+```
+
+## have fun!

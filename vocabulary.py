@@ -9,6 +9,12 @@ class Vocabulary:
 
     @staticmethod
     def cmp(s, t):
+        """
+        compare the likelihood of two words
+        :param s: word 1
+        :param t: word 2
+        :return: likelihood
+        """
         n = min(len(s), len(t))
         m = 0
         for i in range(n):
@@ -18,6 +24,11 @@ class Vocabulary:
         return m
 
     def init_dict(self, voc_file):
+        """
+        initialize class owned dict with vocabulary file
+        :param voc_file: vocabulary file
+        :return:
+        """
         f = open(voc_file, 'r')
         for line in f:
             tmp_line = line.strip()
@@ -25,12 +36,23 @@ class Vocabulary:
                 self.dict[tmp_line] = True
 
     def search(self, word):
+        """
+        search the word in the dict
+        :param word: word to search
+        :return: whether the word is in the dict
+        """
         is_word = self.dict[word.strip()]
         if not is_word:
             self.dict.pop(word)
         return is_word
 
-    def predict(self, word):
+    def predict(self, word, num_advice):
+        """
+        predict the most likely correct words if word is incorrect
+        :param word: word to predict
+        :param num_advice: number of predictions to give
+        :return: list of predictions
+        """
         word = word.strip()
         m = len(word)
         if m < 2:
@@ -52,18 +74,15 @@ class Vocabulary:
         for i in range(len(result_list)):
             if result_list[i][1] != result_list[0][1]:
                 break
-            optimal.append(result_list[i][0])
+            optimal.append([result_list[i][0], 0])
 
-        # get the best one
-        best = ''
-        likelihood = 0
+        # sort the optimal by likelihood
         for i in range(len(optimal)):
-            score = self.cmp(word, optimal[i])
-            if score > likelihood:
-                likelihood = score
-                best = optimal[i]
+            optimal[i][1] = self.cmp(word, optimal[i][0])
+        optimal.sort(key=lambda x: x[1], reverse=True)
 
-        return best
+        length = min(num_advice, len(optimal))
+        return [x[0] for x in optimal[:length]]
 
 
 if __name__ == '__main__':
@@ -73,6 +92,6 @@ if __name__ == '__main__':
     iw = input('> ')
     while iw != 'q':
         if not voc.search(iw):
-            print('wrong, maybe', voc.predict(iw))
+            print('wrong, maybe', voc.predict(iw, 2))
 
         iw = input('> ')

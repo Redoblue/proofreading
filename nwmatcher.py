@@ -94,6 +94,8 @@ class NWMatcher:
 
 if __name__ == '__main__':
     nw = NWMatcher()
-    print(nw.match('absense', 'absence'))
+    #print(nw.match('absense', 'absence'))
+    print('goodds', 'gooedst')
+    nw.match('goodds', 'gooedst')
     print(nw.opt)
     print(nw.backtrack())

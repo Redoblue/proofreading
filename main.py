@@ -20,10 +20,7 @@ def parse(file_name):
         c = file.read(1).lower()
         while c != '':
             if c in alphabet:
-                if last in split_chars:
-                    tmp_word += c
-                elif last in alphabet:
-                    tmp_word += c
+                tmp_word += c
             elif c in split_chars:
                 if last in alphabet:
                     word_list.append([tmp_word, index - len(tmp_word), 0, ''])
@@ -64,24 +61,29 @@ def write_back(i_file, o_file, word_list):
         content = list(f.read())
 
     offset = 0
+    count = 0
     with open(o_file, 'w') as f:
         for item in word_list:
             if item[2] == 0:
                 continue
-            else:
-                preds = ''
-                for i in range(len(item[3]) - 1):
-                    preds += item[3][i]
-                    preds += ','
-                preds += item[3][len(item[3]) - 1]
 
-                content.insert(item[1] + offset, '#')
-                content.insert(item[1] + offset + len(item[0]) + 1, '({})'.format(preds))
-                offset += 2
+            preds = ''
+            for i in range(len(item[3]) - 1):
+                preds += item[3][i]
+                preds += ','
+            preds += item[3][len(item[3]) - 1]
+
+            content.insert(item[1] + offset, '#')
+            content.insert(item[1] + offset + len(item[0]) + 1, '({})'.format(preds))
+
+            offset += 2
+            count += 1
 
         for c in content:
             f.write(c)
         f.flush()
+
+        print("errors: {}".format(count))
 
 
 def parse_opt():

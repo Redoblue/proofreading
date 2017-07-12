@@ -68,21 +68,29 @@ class Vocabulary:
 
         # sort by score
         result_list = sorted(result_dict.items(), key=lambda x: x[1], reverse=True)
+        result_list = result_list[:50]
 
         # only want items with highest score
         optimal = []
+        len_opt = 0
         for i in range(len(result_list)):
             if result_list[i][1] != result_list[0][1]:
                 break
             optimal.append([result_list[i][0], 0])
+            len_opt += 1
 
         # sort the optimal by likelihood
         for i in range(len(optimal)):
             optimal[i][1] = self.cmp(word, optimal[i][0])
         optimal.sort(key=lambda x: x[1], reverse=True)
 
-        length = min(num_advice, len(optimal))
-        return [x[0] for x in optimal[:length]]
+        # the final list
+        final = [x[0] for x in optimal]
+        resdue = [x[0] for x in result_list[len_opt:]]
+        final.extend(resdue)
+
+        #length = min(num_advice, len(optimal))
+        return [x for x in final[:num_advice]]
 
 
 if __name__ == '__main__':

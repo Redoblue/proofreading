@@ -92,9 +92,9 @@ def parse_opt():
     :return: parsed options
     """
     parser = OptionParser()
-    parser.add_option("-i", "--input", dest="input", default="test.txt",
+    parser.add_option("-i", "--input", dest="input", default="input.txt",
                       type="string", help="input file to handle")
-    parser.add_option("-o", "--output", dest="output", default="result.txt",
+    parser.add_option("-o", "--output", dest="output", default="output.txt",
                       type="string", help="output file of result")
     parser.add_option("-n", "--num_advice", dest="num_advice", default=1,
                       type="int", help="number of advice word to provide")
